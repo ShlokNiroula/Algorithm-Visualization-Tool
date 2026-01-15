@@ -82,6 +82,9 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        searchField = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,10 +169,21 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Delete");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Search Algorithm:");
+
+        searchField.setText("jTextField1");
+
+        jButton6.setText("Binary Search");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -182,15 +196,21 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton3)
-                        .addGap(56, 56, 56)
-                        .addComponent(jButton4)
-                        .addGap(61, 61, 61)
-                        .addComponent(jButton5))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton6))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(49, 49, 49)
+                        .addComponent(jButton3)
+                        .addGap(55, 55, 55)
+                        .addComponent(jButton4)
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton5)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,15 +219,20 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6))
+                .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
                     .addComponent(jButton5))
-                .addGap(0, 61, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -361,6 +386,147 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
         }// TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // VALIDATION 1: Check controller
+        if (controller == null) {
+            JOptionPane.showMessageDialog(this,
+                "❌ System Error: No data controller found",
+                "System Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+        // VALIDATION 2: Get and validate search term
+        String searchTerm = searchField.getText().trim();
+    
+        if (searchTerm.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "⚠️ Please enter a search term",
+                "Input Required",
+                JOptionPane.WARNING_MESSAGE);
+            searchField.requestFocus();
+            return;
+        }
+    
+        // VALIDATION 3: Check length
+        if (searchTerm.length() < 2) {
+            JOptionPane.showMessageDialog(this,
+                "⚠️ Search term must be at least 2 characters",
+                "Invalid Input",
+                JOptionPane.WARNING_MESSAGE);
+            searchField.selectAll();
+            searchField.requestFocus();
+            return;
+        }
+    
+        // VALIDATION 4: Check for special characters
+        if (!searchTerm.matches("^[a-zA-Z0-9\\s]+$")) {
+            JOptionPane.showMessageDialog(this,
+                "⚠️ Only letters, numbers and spaces allowed",
+                "Invalid Characters",
+                JOptionPane.WARNING_MESSAGE);
+            searchField.selectAll();
+            searchField.requestFocus();
+            return;
+        }
+    
+        // Get saved algorithms
+        String[] algorithmNames = controller.getSavedStateNames();
+    
+        // VALIDATION 5: Check if there are any saved algorithms
+        if (algorithmNames.length == 0) {
+            JOptionPane.showMessageDialog(this,
+                "📭 No saved algorithms found\nPlease save some algorithms first",
+                "No Data",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+    
+        // Sort for binary search (required)
+        String[] sortedNames = algorithmNames.clone();
+        Arrays.sort(sortedNames);
+    
+        // Perform Binary Search
+        int left = 0;
+        int right = sortedNames.length - 1;
+        int foundIndex = -1;
+        int steps = 0;
+    
+        while (left <= right) {
+            steps++;
+            int mid = left + (right - left) / 2;
+            int comparison = searchTerm.compareToIgnoreCase(sortedNames[mid]);
+        
+            if (comparison == 0) {
+                foundIndex = mid;
+                break;
+            } else if (comparison < 0) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+    
+        // SHOW USEFUL RESULTS
+        if (foundIndex != -1) {
+            String foundName = sortedNames[foundIndex];
+        
+            // 1. Highlight in table
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                String tableName = (String) jTable1.getValueAt(i, 0);
+                if (tableName.equals(foundName)) {
+                    jTable1.setRowSelectionInterval(i, i);
+                    jTable1.scrollRectToVisible(jTable1.getCellRect(i, 0, true));
+                
+                    // 2. Show useful info dialog
+                    String algorithmType = (String) jTable1.getValueAt(i, 1);
+                    String createdDate = (String) jTable1.getValueAt(i, 3);
+                
+                    JOptionPane.showMessageDialog(this,
+                        "✅ Algorithm Found!\n\n" +
+                        "Name: " + foundName + "\n" +
+                        "Type: " + algorithmType + "\n" +
+                        "Created: " + createdDate + "\n" +
+                        "Search Steps: " + steps + "\n\n" +
+                        "Algorithm: Binary Search\n" +
+                        "Complexity: O(log n)\n" +
+                        "Search Time: Instant",
+                        "Search Successful",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                }
+            }
+        } else {
+            // 3. Show suggestions for "not found"
+            List<String> suggestions = new ArrayList<>();
+            for (String name : algorithmNames) {
+                if (name.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    suggestions.add(name);
+                }
+            }
+        
+            String message = "❌ Algorithm not found: \"" + searchTerm + "\"\n\n";
+            message += "Search Steps: " + steps + "\n";
+            message += "Total Algorithms: " + algorithmNames.length + "\n\n";
+        
+            if (!suggestions.isEmpty()) {
+                message += "Did you mean?\n";
+                for (int i = 0; i < Math.min(3, suggestions.size()); i++) {
+                    message += "• " + suggestions.get(i) + "\n";
+                }
+            } else {
+                message += "No similar algorithms found.";
+            }
+        
+            JOptionPane.showMessageDialog(this,
+                message,
+                "Not Found",
+                JOptionPane.WARNING_MESSAGE);
+        }
+    
+        searchField.setText("");// TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -392,12 +558,15 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 }
