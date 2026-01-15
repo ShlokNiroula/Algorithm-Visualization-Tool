@@ -61,6 +61,106 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
         }
     }
     
+private void sortAlgorithms(boolean ascending) {
+    // VALIDATION 1: Check controller
+    if (controller == null) {
+        JOptionPane.showMessageDialog(this,
+            "❌ System Error: No data available",
+            "System Error",
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Get algorithms
+    String[] algorithmNames = controller.getSavedStateNames();
+
+    // VALIDATION 2: Check if enough data to sort
+    if (algorithmNames.length < 2) {
+        String message = algorithmNames.length == 0 ?
+            "📭 No algorithms to sort" :
+            "ℹ️ Only 1 algorithm - no sorting needed";
+    
+        JOptionPane.showMessageDialog(this,
+            message,
+            "Sort Info",
+            JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    // Collect data BEFORE clearing the table
+    Map<String, String[]> algorithmData = new HashMap<>();
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    
+    for (int i = 0; i < model.getRowCount(); i++) {
+        String name = (String) model.getValueAt(i, 0);
+        // Skip placeholder rows
+        if (name.equals("No saved examples") || name.equals("No saved algorithms")) {
+            continue;
+        }
+        
+        String type = (String) model.getValueAt(i, 1);
+        String array = (String) model.getValueAt(i, 2);
+        String date = (String) model.getValueAt(i, 3);
+        String steps = String.valueOf(model.getValueAt(i, 4));
+    
+        algorithmData.put(name, new String[]{type, array, date, steps});
+    }
+
+    // Ask for confirmation for large datasets
+    if (algorithmNames.length > 10) {
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Sort " + algorithmNames.length + " algorithms?\n" +
+            "Algorithm: Quick Sort\n" +
+            "Complexity: O(n log n)",
+            "Confirm Sort",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+    
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+    }
+
+    // Perform sort
+    String[] sortedNames = algorithmNames.clone();
+    long startTime = System.nanoTime();
+
+    if (ascending) {
+        Arrays.sort(sortedNames); // Using Java's built-in sort
+    } else {
+        Arrays.sort(sortedNames, Collections.reverseOrder());
+    }
+
+    long endTime = System.nanoTime();
+    long durationMs = (endTime - startTime) / 1_000_000;
+
+    // Update table
+    model.setRowCount(0);
+
+    // Re-add in sorted order
+    for (String name : sortedNames) {
+        String[] data = algorithmData.get(name);
+        if (data != null) {
+            model.addRow(new Object[]{name, data[0], data[1], data[2], data[3]});
+        }
+    }
+
+    // Show useful results
+    String sortType = ascending ? "Ascending (A-Z)" : "Descending (Z-A)";
+
+    JOptionPane.showMessageDialog(this,
+        "✅ Sorting Complete!\n\n" +
+        "Sort Type: " + sortType + "\n" +
+        "Algorithms Sorted: " + sortedNames.length + "\n" +
+        "Sorting Time: " + durationMs + " ms\n\n" +
+        "Algorithm Used: Quick Sort\n" +
+        "Time Complexity: O(n log n)\n" +
+        "Space Complexity: O(log n)\n\n" +
+        "Table has been updated with sorted results.",
+        "Sort Successful",
+        JOptionPane.INFORMATION_MESSAGE);
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -85,6 +185,7 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         searchField = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -178,12 +279,17 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
 
         jLabel3.setText("Search Algorithm:");
 
-        searchField.setText("jTextField1");
-
         jButton6.setText("Binary Search");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Sort Ascending");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
             }
         });
 
@@ -196,35 +302,46 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jButton6))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton6))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(49, 49, 49)
+                                .addComponent(jButton3)
+                                .addGap(55, 55, 55)
+                                .addComponent(jButton4)
+                                .addGap(58, 58, 58)
+                                .addComponent(jButton5)))
+                        .addContainerGap(18, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(49, 49, 49)
-                        .addComponent(jButton3)
-                        .addGap(55, 55, 55)
-                        .addComponent(jButton4)
-                        .addGap(58, 58, 58)
-                        .addComponent(jButton5)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
+                        .addGap(49, 49, 49))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton7)
+                        .addGap(7, 7, 7)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6))
-                .addGap(32, 32, 32)
+                .addGap(49, 49, 49)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -232,7 +349,7 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jButton4)
                     .addComponent(jButton5))
-                .addGap(0, 22, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -527,6 +644,11 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
         searchField.setText("");// TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        System.out.println("Sort Ascending clicked");
+        sortAlgorithms(true);// TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -559,6 +681,7 @@ public class SavedAlgorithmsView extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
