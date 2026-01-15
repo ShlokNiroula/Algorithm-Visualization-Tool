@@ -6,6 +6,11 @@ package View;
 
 import Controller.AlgorithmController;
 import javax.swing.JOptionPane;
+import java.awt.Font;
+import java.awt.Dimension;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author Asus
@@ -20,6 +25,57 @@ public class HomeView extends javax.swing.JFrame {
     public HomeView() {
         initComponents();
     }
+    
+    private void showAboutDialog() {
+    String aboutText = """
+        🎓 ALGORITHM LEARNING MANAGEMENT SYSTEM
+        
+        Version: 1.0
+        Developer: [Your Name]
+        Student ID: [Your ID]
+        Module: CS5003NI - Data Structures and Specialist Programming
+        Institution: London Metropolitan University / Islington College
+        Submission Date: January 2026
+        
+        📋 SYSTEM FEATURES:
+        
+        1. ALGORITHM VISUALIZATION
+           • Bubble Sort with step-by-step animation
+           • Binary Search implementation
+           • Quick Sort algorithm demonstration
+        
+        2. DATA STRUCTURES DEMONSTRATED:
+           • HashMap - Storing algorithm states
+           • ArrayList - Storing sorting steps
+           • Queue - Recent operations tracking
+           • Stack - Undo functionality
+           • PriorityQueue - Algorithm prioritization
+        
+        3. SYSTEM MANAGEMENT:
+           • Admin Dashboard with real-time statistics
+           • CRUD operations for algorithm states
+           • Input validation and error handling
+           • File persistence for saved states
+        
+        4. TECHNOLOGIES USED:
+           • Java Swing for GUI
+           • MVC Architecture
+           • Object-Oriented Programming
+           • File I/O operations
+        
+        © 2026 - Coursework Submission
+        """;
+    
+    JTextArea textArea = new JTextArea(aboutText);
+    textArea.setEditable(false);
+    textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+    
+    JScrollPane scrollPane = new JScrollPane(textArea);
+    scrollPane.setPreferredSize(new Dimension(500, 400));
+    
+    JOptionPane.showMessageDialog(this, scrollPane,
+        "About - Algorithm Learning System", JOptionPane.INFORMATION_MESSAGE);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +96,7 @@ public class HomeView extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton4 = new javax.swing.JButton();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -100,6 +157,13 @@ public class HomeView extends javax.swing.JFrame {
         jTextArea1.setText("      Total Algorithms: 3\nMost Viewed: Bubble Sort");
         jScrollPane1.setViewportView(jTextArea1);
 
+        jButton4.setText("About");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,7 +194,9 @@ public class HomeView extends javax.swing.JFrame {
                                 .addGap(154, 154, 154))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addGap(39, 39, 39))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,9 +213,15 @@ public class HomeView extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addGap(26, 26, 26))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,6 +280,10 @@ public class HomeView extends javax.swing.JFrame {
         this.dispose();// TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        showAboutDialog();// TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -237,6 +313,7 @@ public class HomeView extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
