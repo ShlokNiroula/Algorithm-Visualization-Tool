@@ -27,55 +27,55 @@ public class HomeView extends javax.swing.JFrame {
     }
     
     private void showAboutDialog() {
-    String aboutText = """
-        🎓 ALGORITHM LEARNING MANAGEMENT SYSTEM
+        String aboutText = """
+            🎓 ALGORITHM LEARNING MANAGEMENT SYSTEM
         
-        Version: 1.0
-        Developer: [Your Name]
-        Student ID: [Your ID]
-        Module: CS5003NI - Data Structures and Specialist Programming
-        Institution: London Metropolitan University / Islington College
-        Submission Date: January 2026
+            Version: 1.0
+            Developer: [Your Name]
+            Student ID: [Your ID]
+            Module: CS5003NI - Data Structures and Specialist Programming
+            Institution: London Metropolitan University / Islington College
+            Submission Date: January 2026
         
-        📋 SYSTEM FEATURES:
+            📋 SYSTEM FEATURES:
         
-        1. ALGORITHM VISUALIZATION
-           • Bubble Sort with step-by-step animation
-           • Binary Search implementation
-           • Quick Sort algorithm demonstration
+            1. ALGORITHM VISUALIZATION
+                • Bubble Sort with step-by-step animation
+                • Binary Search implementation
+                • Quick Sort algorithm demonstration
         
-        2. DATA STRUCTURES DEMONSTRATED:
-           • HashMap - Storing algorithm states
-           • ArrayList - Storing sorting steps
-           • Queue - Recent operations tracking
-           • Stack - Undo functionality
-           • PriorityQueue - Algorithm prioritization
+            2. DATA STRUCTURES DEMONSTRATED:
+                • HashMap - Storing algorithm states
+                • ArrayList - Storing sorting steps
+                • Queue - Recent operations tracking
+                • Stack - Undo functionality
+                • PriorityQueue - Algorithm prioritization
         
-        3. SYSTEM MANAGEMENT:
-           • Admin Dashboard with real-time statistics
-           • CRUD operations for algorithm states
-           • Input validation and error handling
-           • File persistence for saved states
+            3. SYSTEM MANAGEMENT:
+                • Admin Dashboard with real-time statistics
+                • CRUD operations for algorithm states
+                • Input validation and error handling
+                • File persistence for saved states
         
-        4. TECHNOLOGIES USED:
-           • Java Swing for GUI
-           • MVC Architecture
-           • Object-Oriented Programming
-           • File I/O operations
+            4. TECHNOLOGIES USED:
+                • Java Swing for GUI
+                • MVC Architecture
+                • Object-Oriented Programming
+                • File I/O operations
         
-        © 2026 - Coursework Submission
-        """;
+            © 2026 - Coursework Submission
+            """;
     
-    JTextArea textArea = new JTextArea(aboutText);
-    textArea.setEditable(false);
-    textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JTextArea textArea = new JTextArea(aboutText);
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
     
-    JScrollPane scrollPane = new JScrollPane(textArea);
-    scrollPane.setPreferredSize(new Dimension(500, 400));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
     
-    JOptionPane.showMessageDialog(this, scrollPane,
+        JOptionPane.showMessageDialog(this, scrollPane,
         "About - Algorithm Learning System", JOptionPane.INFORMATION_MESSAGE);
-}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
